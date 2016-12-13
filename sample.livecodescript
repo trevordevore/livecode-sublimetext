@@ -1,4 +1,4 @@
-script "LiveCode Sublime Text Language Module Example Stack"
+﻿script "LiveCode Sublime Text Language Module Example Stack"
 
 global gGlobalVar # no variable assignemnt allowed for globals
 global gGlobalVar2 -- just a variable for testing
@@ -41,6 +41,16 @@ setProp uCustomProp2[pCategory] pValue
   if "1" is 1 then return "something"
   else return "something else"
 end uCustomProp2
+
+
+getProp myCustomProp
+  return the myCustomProp2["test"] of me
+end myCustomProp
+
+
+getProp myCustomProp2 [pKey]
+  return sLocalVar[pKey]
+end myCustomProp2
 
 
 function myFunction pParam1, @rParam2
@@ -165,3 +175,122 @@ end mouseUp
 after mouseUp pBtnNum
   answer param(0) && pBtnNum
 end mouseUp
+
+/**
+ The following examples are edge cases. These examples all compile
+ but the formatting may be a little strange.
+ */
+on mouseUp
+  beep
+  makeSomething
+end mouseUp
+
+on makeSomething
+  local a
+  local b
+  local c
+  local D
+
+  put "a" into a
+  put "b" into b
+  if a = b then put "c"
+  else if  D = D then
+     put "d = d"
+  else
+     put "last else"
+  end if
+
+  if a then put c
+  if c then put a
+
+  if a then 
+     if b then 
+     else 
+     end if 
+  else  
+  end if 
+
+
+  if a then 
+     doSomething
+  else put a
+
+  if a then
+     doSomething
+  else if d then put c
+
+  if a then doSomething else if d then put c
+
+  if a then doSomething
+  else if d then put c
+
+  if a  
+  then 
+     put a
+     put b
+     put c
+  end if 
+
+  if a
+  then 
+     put a
+  else 
+     put b
+  end if 
+
+  if a then
+     if b then get c else get d 
+     else 
+        doSomethingElse 
+     end if
+
+  end makeSomething
+
+
+on mouseDown/*ca */
+  local a
+  local f
+  local b
+  local aLIne
+
+  if aLine contains "/*" and aLine contains not "*/" then -- test
+
+  end if
+
+  /*aösfd */
+
+  put "beep"
+  put "a" into a
+  put "b" into f
+  if a = f then # comment  \
+        put "--"; put "h" \
+        put "#" \
+        put "*"  \
+        put "*"
+  if f = 1 then
+  end if
+  --    /*what is going on
+  --    --end if
+  --    here*/
+else
+  put "a"
+end if
+if a is not b then beep 
+end mouseDown
+
+
+on mouseMove
+  local a
+  local d
+  if a < d then
+     --beep
+  end if
+end mouseMove
+
+getprop myProp[begin]
+  beep
+end myProp
+
+on doSomethingElse
+
+end doSomethingElse
