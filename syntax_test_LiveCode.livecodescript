@@ -179,6 +179,7 @@ setProp uCustomProp2[pCategory] pValue
 --                     ^^^^^^^^^ meta.item-access.livecode
 --                    ^ punctuation.definition.key.begin.livecode
 --                              ^ punctuation.definition.key.end.livecode
+--                                   ^^ variable.language.livecode
   
   # line continuation.
 --^^^^^^^^^^^^^^^^^^^^^ comment
@@ -314,6 +315,7 @@ command myCommand
   myPrivateCommand pParama
   put the result into tError
 --^^^ keyword
+--    ^^^^^^^^^^ variable.language.livecode
 --               ^^^^ keyword
 --                    variable.other
   
@@ -336,6 +338,7 @@ private function myPrivateFunction pParam1, @xParam2
 --            ^ variable.other.livecode
 --              ^ keyword.operator.assignment.livecode
 --                ^ constant.numeric.livecode
+--                     ^^^^^^^^^^^^^^^^^^^^^^^^^ variable.language.livecode
     if i = 1 then
       next repeat
 --    ^^^^^^^^^^^ keyword.control.flow.livecode

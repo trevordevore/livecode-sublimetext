@@ -11,6 +11,7 @@ variables:
   constants: '(true|false|empty)'
   eol_or_comment: '(?=$|--|/\*|#)'
   operators: '[&=></-]|\b(?:is|not|and|contains)\b'
+  reserved_variables: '\b(?:me|(?:the )?(?:number of elements of|target|result|short name of|number of items of|last char of|number of chars of))\b'
 
 contexts:
   main:
@@ -336,6 +337,8 @@ contexts:
     - match: '{{operators}}'
       scope: keyword.operator.livecode
     - include: line_continuation_char
+    - match: '{{reserved_variables}}'
+      scope: variable.language.livecode
     - match: '({{identifier}})\s*(\[)'
       captures:
         1: variable.other.livecode
@@ -420,7 +423,7 @@ contexts:
   put:
     - match: '\s*(put)\s+'
       captures:
-        1: keyword.livecode
+        1: keyword.other.livecode
       push:
         - include: expression
         - match: '$\n'
@@ -428,7 +431,7 @@ contexts:
           pop: true
         - match: '\s+(into|before|after)\s'
           captures:
-            1: keyword.livecode
+            1: keyword.other.livecode
           set:
             - match: '{{identifier}}'
               scope: variable.other.livecode
