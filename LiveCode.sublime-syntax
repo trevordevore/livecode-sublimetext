@@ -4,207 +4,443 @@
 name: LiveCode
 file_extensions:
   - livecodescript
-first_line_match:
+first_line_match: '^script\s+"[^"]+"'
 scope: source.livecode
+variables:
+  identifier: '[_A-Za-z][A-Za-z0-9._]*'
+  constants: '(true|false|empty)'
+  eol_or_comment: '(?=$|--|/\*|#)'
+  operators: '[&=></-]|\b(?:is|not|and|contains)\b'
+  reserved_variables: '\b(?:me|(?:the )?(?:number of elements of|target|result|short name of|number of items of|last char of|number of chars of))\b'
+
 contexts:
   main:
-    - include: blocks
-    - include: inline
-  blocks:
-    - match: |-
-        ^(?x)
-          \s*(on|command|function|private\s+function|private\s+command|after|before|setProp|getProp)\s+
-          (\w+)             # function name
-          ((?:[\s,:\{\}]*(?:\w+)?)*)  # parameters
-      comment: |
-        This is not a very well-designed rule.  For now,
-                                we can leave it like this though, as it sorta works.
+    - match: '(script)\s+'
       captures:
-        1: keyword.control.function.livecode
-        2: entity.name.function.handler.livecode
-        3: punctuation.definition.parameters.livecode
-        4: variable.parameter.handler.livecode
-        5: punctuation.definition.parameters.livecode
+        1: keyword.script.name.livecode
+      push: [root, pop_after_string]
+
+  pop_after_string:
+    - include: string
+    - match: ''
+      pop: true
+
+  root:
+    - include: function
+    - include: statement
+
+  statement:
+    - include: declaration
+    - include: comment
+    - include: control
+    - include: expression
+    - include: put
+    - match: '\s*((?:exit|next)\s+repeat)\b'
+      captures:
+        1: keyword.control.flow.livecode
+
+  line_continuation_char:
+    - match: '\\(?=$|\s)'
+      scope: punctuation.separator.continuation.line.livecode
       push:
-        - meta_scope: meta.function.positional.livecode
-        - match: ^\s*(end)(?:\s+(\2))?(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.function.livecode
-          pop: true
-        - include: main
-    - match: |-
-        ^(?x)
-          \s*(on|command|function|private\s+function|private\s+command|after|before|setProp|getProp)\s+
-          (\w+)             # function name
-          (?=\s*(--.*?)?$)        # nothing else
+        - match: '\S.*'
+          scope: invalid.illegal.expected-end-of-line.livecode
+        - match: '$'
+          set:
+            - match: '^'
+              pop: true
+
+  declaration:
+    - match: '\s*(global)\s+({{identifier}})'
       captures:
-        1: keyword.control.function.livecode
-        2: entity.name.function.handler.livecode
+        1: storage.modifier.livecode
+        2: variable.other.livecode
+    - match: '\s*(local)\s+({{identifier}})'
+      captures:
+        1: storage.modifier.livecode
+        2: variable.other.livecode
+      push: declaration_optional_assignment
+    - match: '\s*(constant)\s+({{identifier}})'
+      captures:
+        1: storage.modifier.livecode
+        2: entity.name.constant.livecode
+      push: declaration_optional_assignment
+
+  declaration_optional_assignment:
+    - match: '\s*(=)\s*'
+      captures:
+        1: keyword.operator.assignment.livecode
+      set:
+        - include: string
+        - include: number
+        - include: constant
+        - include: comment
+        - match: '$'
+          pop: true
+    - include: comment
+    - match: ','
+      scope: punctuation.separator.variable-declaration.livecode
+      push: declaration_expect_identifier
+    - match: '$'
+      pop: true
+
+  declaration_expect_identifier:
+    - match: '$\n?'
+      scope: invalid.illegal.expected-identifier.livecode
+      pop: true
+    - include: comment
+    - match: '{{identifier}}'
+      scope: variable.other.livecode
+      set:
+        - match: ','
+          scope: punctuation.separator.variable-declaration.livecode
+          set: declaration_expect_identifier
+        - include: comment
+        - match: '$'
+          pop: true
+    - match: '\S'
+      scope: invalid.illegal.unexpected-token.livecode
+
+  string:
+    - match: '"'
+      scope: punctuation.definition.string.begin.livecode
       push:
-        - meta_scope: meta.function.parameterless.livecode
-        - match: ^\s*(end)(?:\s+(\2))?(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.function.livecode
+        - meta_scope: string.quoted.double.livecode
+        - match: '"'
+          scope: punctuation.definition.string.end.livecode
           pop: true
-        - include: main
-    - include: blocks.repeat
-    - include: blocks.statement
-    - include: blocks.other
-  blocks.other:
-    - match: ^\s*(if)\b
-      captures:
-        1: keyword.control.if.livecode
+
+  number:
+    - match: '[0-9]+.[0-9]+([eE][-+]?[0-9]+)?'
+      scope: constant.numeric.livecode
+    - match: '[0-9]+'
+      scope: constant.numeric.livecode
+
+  constant:
+    - match: '{{constants}}'
+      scope: constant.language.livecode
+
+  comment:
+    - match: '--'
+      scope: punctuation.definition.comment.livecode
       push:
-        - meta_scope: meta.block.if.livecode
-        - match: ^\s*(end(?:\s+if)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
+        - meta_scope: comment.line.double-dash.livecode
+        - include: line_continuation_char
+        - match: '$\n?'
           pop: true
-        - match: \b(then)\b
-          scope: keyword.control.then.livecode
-        - match: \b(else\s+if)\b
-          scope: keyword.control.else-if.livecode
-        - match: \b(else)\b
-          scope: keyword.control.else.livecode
-        - include: main
-  blocks.repeat:
-    - match: ^\s*(repeat)\s+(until)\b
-      captures:
-        1: keyword.control.repeat.livecode
-        2: keyword.control.until.livecode
+    - match: '#'
+      scope: punctuation.definition.comment.livecode
       push:
-        - meta_scope: meta.block.repeat.until.livecode
-        - match: ^\s*(end(?:\s+repeat)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
+        - meta_scope: comment.line.hash.livecode
+        - include: line_continuation_char
+        - match: '$\n?'
           pop: true
-        - include: main
-    - match: ^\s*(repeat)\s+(while)\b
-      captures:
-        1: keyword.control.repeat.livecode
-        2: keyword.control.while.livecode
-      push:
-        - meta_scope: meta.block.repeat.while.livecode
-        - match: ^\s*(end(?:\s+repeat)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
-          pop: true
-        - include: main
-    - match: ^\s*(repeat)\s+(with)\s+(\w+)\b
-      captures:
-        1: keyword.control.repeat.livecode
-        2: keyword.control.until.livecode
-        3: variable.parameter.loop.livecode
-      push:
-        - meta_scope: meta.block.repeat.with.livecode
-        - match: ^\s*(end(?:\s+repeat)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
-          pop: true
-        - match: \b(from|to|by)\b
-          scope: keyword.control.modifier.range.livecode
-        - match: \b(in)\b
-          scope: keyword.control.modifier.list.livecode
-        - include: main
-    - match: ^\s*(repeat)\b(?=\s*(--.*?)?$)
-      captures:
-        1: keyword.control.repeat.livecode
-      push:
-        - meta_scope: meta.block.repeat.forever.livecode
-        - match: ^\s*(end(?:\s+repeat)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
-          pop: true
-        - include: main
-    - match: ^\s*(repeat)\b
-      captures:
-        1: keyword.control.repeat.livecode
-      push:
-        - meta_scope: meta.block.repeat.times.livecode
-        - match: ^\s*(end(?:\s+repeat)?)(?=\s*(--.*?)?$)
-          captures:
-            1: keyword.control.end.livecode
-          pop: true
-        - match: \b(times)\b
-          scope: keyword.control.times.livecode
-        - include: main
-  blocks.statement:
-    - match: \b(local)\b
-      captures:
-        1: keyword.control.def.local.livecode
-      push:
-        - meta_scope: meta.statement.local.livecode
-        - match: (?<!\\)$
-          pop: true
-        - match: ","
-          scope: punctuation.separator.variables.local.livecode
-        - match: \b\w+
-          scope: variable.other.readwrite.local.livecode
-        - include: inline
-    - match: \b(global)\b
-      captures:
-        1: keyword.control.def.global.livecode
-      push:
-        - meta_scope: meta.statement.global.livecode
-        - match: (?<!\\)$
-          pop: true
-        - match: ","
-          scope: punctuation.separator.variables.global.livecode
-        - match: \b\w+
-          scope: variable.other.readwrite.global.livecode
-        - include: inline
-    - match: \b(constant)\b
-      captures:
-        1: keyword.control.def.constant.livecode
-      push:
-        - meta_scope: meta.statement.constant.livecode
-        - match: (?<!\\)$
-          pop: true
-        - match: ","
-          scope: punctuation.separator.variables.constant.livecode
-        - match: \b\w+
-          scope: variable.other.readwrite.constant.livecode
-        - include: inline
-    - match: \b(if)\b(?=.*\bthen\b(?!\s*(--.*?)?$))
-      captures:
-        1: keyword.control.if.livecode
-      push:
-        - meta_scope: meta.statement.if-then.livecode
-        - match: (?<!\\)$
-          pop: true
-        - include: inline
-  comments:
-    - match: ^\s*(#).*$\n?
-      scope: comment.line.number-sign.livecode
-      captures:
-        1: punctuation.definition.comment.livecode
-    - match: (--).*$\n?
-      scope: comment.line.double-dash.livecode
-      captures:
-        1: punctuation.definition.comment.livecode
-    - match: \/\*
-      captures:
-        0: punctuation.definition.comment.livecode
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.livecode
       push:
         - meta_scope: comment.block.livecode
-        - match: \*\/
-          captures:
-            0: punctuation.definition.comment.livecode
+        - match: '\*/'
+          scope: punctuation.definition.comment.end.livecode
           pop: true
-        - include: comments.nested
-  comments.nested:
-    - match: \/\*
+
+  function:
+    - match: '^\s*(?:(private)\s+)?(on|before|after)\s+({{identifier}})\s*{{eol_or_comment}}'
       captures:
-        0: punctuation.definition.comment.livecode
-      push:
-        - meta_scope: comment.block.livecode
-        - match: \*\/
-          captures:
-            0: punctuation.definition.comment.livecode
+        1: storage.modifier.livecode
+        2: keyword.control.function.handler.begin.livecode
+        3: entity.name.function.handler.begin.livecode
+      push: inside_handler
+    - match: '^\s*(?:(private)\s+)?(on|before|after)\s+({{identifier}})'
+      captures:
+        1: storage.modifier.livecode
+        2: keyword.control.function.handler.begin.livecode
+        3: entity.name.function.handler.begin.livecode
+      push: [inside_handler, handler_params]
+    - match: '^\s*((?i:setProp|getProp))\s*({{identifier}})\s*(?:(\[)\s*({{identifier}})\s*(\]))?\s*({{identifier}})?'
+      captures:
+        1: keyword.control.function.property.begin.livecode
+        2: entity.name.function.property.begin.livecode
+        3: punctuation.definition.property.begin.livecode
+        4: variable.parameter.livecode
+        5: punctuation.definition.property.end.livecode
+        6: variable.parameter.livecode
+      push: inside_property
+    - match: '^\s*(?:(private)\s+)?(command|function)\s+({{identifier}})'
+      captures:
+        1: storage.modifier.livecode
+        2: keyword.control.function.begin.livecode
+        3: entity.name.function.begin.livecode
+      push: [inside_function, function_params]
+
+  inside_handler:
+    - meta_scope: meta.function.livecode
+    - match: '^\s*(end)\s+(\3)($|\s)'
+      captures:
+        1: keyword.control.function.handler.end.livecode
+        2: entity.name.function.handler.end.livecode
+      pop: true
+    - match: '^\s*(end)\s+({{identifier}})?'
+      captures:
+        1: keyword.control.function.handler.end.livecode
+        2: invalid.illegal.unexpected-token.livecode
+    - include: statement
+
+  handler_params:
+    - match: '{{identifier}}'
+      scope: variable.parameter.livecode
+    - include: comment
+    - match: '$'
+      pop: true
+
+  inside_property:
+    - meta_scope: meta.function.livecode
+    - match: '^\s*(end)\s+(\2)($|\s)'
+      captures:
+        1: keyword.control.function.property.end.livecode
+        2: entity.name.function.property.end.livecode
+      pop: true
+    - match: '^\s*(end)\s+({{identifier}})?'
+      captures:
+        1: keyword.control.function.property.end.livecode
+        2: invalid.illegal.unexpected-token.livecode
+    - include: statement
+
+  inside_function:
+    - meta_scope: meta.function.livecode
+    - match: '^\s*(end)\s+(\3)($|\s)'
+      captures:
+        1: keyword.control.function.end.livecode
+        2: entity.name.function.end.livecode
+      pop: true
+    - match: '^\s*(end)\s+({{identifier}})?'
+      captures:
+        1: keyword.control.function.end.livecode
+        2: invalid.illegal.unexpected-token.livecode
+    - include: statement
+
+  function_params:
+    - match: '@?{{identifier}}'
+      scope: variable.parameter.livecode
+      set:
+        - match: ','
+          scope: punctuation.separator.parameter.livecode
+          set:
+            - match: '$\n?'
+              scope: invalid.illegal.expected-identifier.livecode
+            - include: function_params
+        - include: comment
+        - match: '$'
           pop: true
-        - include: comments.nested
-  inline:
-    - include: comments
-    - include: data-structures
-    - include: built-in
-    - include: standardadditions
+    - include: comment
+    - match: '$'
+      pop: true
+
+  control:
+    - match: '^\s*(if)\s+'
+      captures:
+        1: keyword.control.flow.livecode
+      push: then_could_be_block_or_single_line
+    - match: '^\s*(switch)\s+'
+      captures:
+        1: keyword.control.flow.livecode
+      push:
+        - meta_scope: meta.switch.block.livecode
+        - match: '^\s*(end\s+switch)\b'
+          captures:
+            1: keyword.control.flow.livecode
+          pop: true
+        - match: '^\s*(case)\s+'
+          captures:
+            1: keyword.control.flow.livecode
+          push:
+            - match: '$'
+              pop: true
+            - include: expression
+        - match: '^\s*(default)\b'
+          captures:
+            1: keyword.control.flow.livecode
+        - match: '^\s*(break)\b'
+          captures:
+            1: keyword.control.flow.livecode
+        - include: statement
+    - match: '^\s*(repeat\s+forever)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      push: inside_repeat
+    - match: '^\s*(repeat)\s+(\d+)\s+(times)\b'
+      captures:
+        1: keyword.control.flow.livecode
+        2: constant.numeric.livecode
+        3: keyword.control.flow.livecode
+      push: inside_repeat
+    - match: '^\s*(repeat\s+with)\s+'
+      captures:
+        1: keyword.control.flow.livecode
+      push:
+        - match: '{{identifier}}'
+          scope: variable.other.livecode
+          set:
+            - match: '='
+              scope: keyword.operator.assignment.livecode
+              set: inside_repeat
+            - match: '$\n?'
+              scope: invalid.illegal.expected-token.livecode
+              set: inside_repeat
+        - match: '\S+'
+          scope: invalid.illegal.expected-identifier.livecode
+          set: inside_repeat
+    - match: '^\s*(repeat\s+(?:while|until|for\s+each))\s+'
+      captures:
+        1: keyword.control.flow.livecode
+      push:
+        - match: '$'
+          set: inside_repeat
+        - include: expression
+    - match: '^\s*(try)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      push:
+        - match: '^\s*(catch)\s({{identifier}})?'
+          captures:
+            1: keyword.control.flow.livecode
+            2: variable.other.livecode
+        - match: '^\s*(finally)\b'
+          captures:
+            1: keyword.control.flow.livecode
+        - match: '^\s*(end\s+try)\b'
+          captures:
+            1: keyword.control.flow.livecode
+          pop: true
+        - include: statement
+
+  then_could_be_block_or_single_line:
+    - meta_content_scope: meta.between-if-and-then.livecode
+    - match: '\s+(then)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      set:
+        - match: '\s*{{eol_or_comment}}'
+          set: inside_control_flow_if_block
+        - match: ''
+          comment: "the above didn't match, therefore it must be a single line if block"
+          set: inside_control_flow_if_single_line
+    - match: '{{eol_or_comment}}'
+      comment: 'uncomment `pop: true` below to exit the if scope if there is no `then` on the same logical line. Apparently it is legal to have the `then` on the next line, hence why it is commented.'
+    #  pop: true
+    - include: expression
+
+  expression:
+    - include: string
+    - include: number
+    - include: comment
+    - include: constant
+    - match: '{{operators}}'
+      scope: keyword.operator.livecode
+    - include: line_continuation_char
+    - match: '{{reserved_variables}}'
+      scope: variable.language.livecode
+    - match: '({{identifier}})\s*(\[)'
+      captures:
+        1: variable.other.livecode
+        2: punctuation.definition.key.begin.livecode
+      push:
+        - meta_content_scope: meta.item-access.livecode
+        - include: expression
+        - match: '$\n?'
+          scope: invalid.illegal.key-access-unclosed.livecode
+          pop: true
+        - match: '\]'
+          scope: punctuation.definition.key.end.livecode
+          pop: true
+    - match: '({{identifier}})(\()'
+      captures:
+        1: variable.function.livecode
+        2: punctuation.section.parameters.begin.livecode
+      push:
+        - meta_scope: meta.function-call.livecode
+        - meta_content_scope: meta.parameters.livecode
+        - match: '\)'
+          scope: punctuation.section.parameters.end.livecode
+          pop: true
+        - match: ','
+          scope: punctuation.separator.parameters.livecode
+        - include: expression
+    - match: '\('
+      scope: punctuation.section.group.begin.livecode
+      push:
+        - meta_scope: meta.group.livecode
+        - match: '\)'
+          scope: punctuation.section.group.end.livecode
+          pop: true
+        - include: expression
+
+  inside_control_flow_if_single_line:
+    - meta_scope: meta.if.line.livecode
+    - match: '$'
+      set: possible_else
+    - include: inside_control_flow_if_common
+    - include: statement
+
+  inside_control_flow_if_block:
+    - meta_scope: meta.if.block.livecode
+    - match: '\s*(end\s+if)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      pop: true
+    - include: inside_control_flow_if_common
+    - include: statement
+
+  inside_control_flow_if_common:
+    - match: '\s*(else\s+if)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      set: then_could_be_block_or_single_line
+    - match: '\s*(else)\s*{{eol_or_comment}}'
+      captures:
+        1: keyword.control.flow.livecode
+    - match: '\s*(else)\s*'
+      captures:
+        1: keyword.control.flow.livecode
+      pop: true
+
+  possible_else:
+    - match: '\s*(else\s+if)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      set: then_could_be_block_or_single_line
+    - match: '\s*(else)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      push:
+        - match: '$'
+          pop: true
+        - include: statement
+    - include: line_continuation_char
+    - include: comment
+    - match: '^'
+      pop: true
+
+  put:
+    - match: '\s*(put)\s+'
+      captures:
+        1: keyword.other.livecode
+      push:
+        - include: expression
+        - match: '$\n'
+          comment: 'with no into|before|after, the message will be put to the LiveCode Console aka the Message Box'
+          pop: true
+        - match: '\s+(into|before|after)\s'
+          captures:
+            1: keyword.other.livecode
+          set:
+            - match: '{{identifier}}'
+              scope: variable.other.livecode
+              pop: true
+
+  inside_repeat:
+    - meta_scope: meta.block.repeat.livecode
+    - match: '^\s*(end\s+repeat)\b'
+      captures:
+        1: keyword.control.flow.livecode
+      pop: true
+    - include: statement
