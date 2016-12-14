@@ -1,0 +1,6 @@
+<snippet>
+	<content><![CDATA[return ${0:# code...} for value]]></content>
+	<tabTrigger>retv</tabTrigger>
+	<scope>source.livecode</scope>
+	<description>return … for value</description>
+</snippet>

@@ -1,0 +1,11 @@
+<snippet>
+	<content><![CDATA[if ${1:condition} then
+	${2:# code...}
+else
+	${3:# code...}
+end if
+$0]]></content>
+	<tabTrigger>ifelse</tabTrigger>
+	<scope>source.livecode</scope>
+	<description>if … else …</description>
+</snippet>

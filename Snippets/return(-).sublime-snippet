@@ -1,0 +1,6 @@
+<snippet>
+	<content><![CDATA[return ${0:# code...}]]></content>
+	<tabTrigger>retu</tabTrigger>
+	<scope>source.livecode</scope>
+	<description>return …</description>
+</snippet>

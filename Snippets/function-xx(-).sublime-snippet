@@ -1,0 +1,8 @@
+<snippet>
+	<content><![CDATA[${1:private }function ${2:FunctionName} ${3:param}
+	${0:# code...}
+end ${2}]]></content>
+	<tabTrigger>fun</tabTrigger>
+	<scope>source.livecode</scope>
+	<description>function …</description>
+</snippet>

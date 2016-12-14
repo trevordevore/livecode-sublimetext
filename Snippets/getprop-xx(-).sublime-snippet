@@ -1,0 +1,8 @@
+<snippet>
+	<content><![CDATA[getProp ${1:HandlerName}[${2:param}]
+	${0:# code...}
+end ${1}]]></content>
+	<tabTrigger>getp</tabTrigger>
+	<scope>source.livecode</scope>
+	<description>getProp …</description>
+</snippet>
