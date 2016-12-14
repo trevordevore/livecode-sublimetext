@@ -8,7 +8,7 @@ first_line_match: '^script\s+"[^"]+"'
 scope: source.livecode
 variables:
   identifier: '[_A-Za-z][A-Za-z0-9._]*'
-  constants: '(true|false|empty)'
+  constants: '(arrow|backslash|busy|colon|comma|crlf|cross|done|down|eight|empty|eof|false|five|formfeed|four|hand|help|ibeam|left|nine|null|one|pi|plus|quote|return|right|scrollbarfactor|seven|six|slash|space|tab|ten|three|true|two|up|watch|zero)'
   eol_or_comment: '(?=$|--|/\*|#)'
   operators: '[&=></-]|\b(?:is|not|and|contains)\b'
   reserved_variables: '\b(?:me|(?:the )?(?:number of elements of|target|result|short name of|number of items of|last char of|number of chars of))\b'
