@@ -299,60 +299,118 @@ end myFunction
 
 
 command myCommand
+-- <- keyword.control.function.begin.livecode
+--^^^^^ keyword.control.function.begin.livecode
+--      ^^^^^^^^^ entity.name.function.begin.livecode
   local tError
+--^^^^^ storage.modifier.livecode
+--      ^^^^^^ variable.other.livecode
   
   if 1 is "1" then return "nothing" # a comment
+--^^ keyword.control.flow.livecode
+--     ^^ keyword.operator.livecode
+--                                  ^^^^^^^^^^^^ comment
   
   myPrivateCommand pParama
   put the result into tError
+--^^^ keyword
+--               ^^^^ keyword
+--                    variable.other
   
   return tError for error
 end myCommand
-
+--^ keyword.control.function.end.livecode
+--  ^^^^^^^^^ entity.name.function.end.livecode
 
 private function myPrivateFunction pParam1, @xParam2
+--^^^^^ storage.modifier.livecode
+--      ^^^^^^^^ keyword.control.function.begin.livecode
+--               ^^^^^^^^^^^^^^^^^ entity.name.function.begin.livecode
+--                                 ^^^^^^^ variable.parameter.livecode
+--                                        ^ punctuation.separator.parameter.livecode
+--                                          ^^^^^^^^ variable.parameter.livecode
+
   # with counterVar = startvalue to endvalue
   repeat with i = 1 to the number of elements of tArray
+--^^^^^^^^^^^ keyword.control.flow.livecode
+--            ^ variable.other.livecode
+--              ^ keyword.operator.assignment.livecode
+--                ^ constant.numeric.livecode
     if i = 1 then
       next repeat
+--    ^^^^^^^^^^^ keyword.control.flow.livecode
     else
       exit repeat
+--    ^^^^^^^^^^^ keyword.control.flow.livecode
     end if
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   # with counterVar = startvalue to endvalue step x
   repeat with i = 1 to 20 step 2
+--^^^^^^^^^^^ keyword.control.flow.livecode
+--            ^ variable.other.livecode
+--              ^ keyword.operator.assignment.livecode
+--                ^ constant.numeric.livecode
+--                     ^^ constant.numeric.livecode
+--                             ^ constant.numeric.livecode
     
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   # with counterVar = startvalue down to endvalue
   repeat with i = 20 down to 10
+--^^^^^^^^^^^ keyword.control.flow.livecode
+--            ^ variable.other.livecode
+--              ^ keyword.operator.assignment.livecode
+--                ^ constant.numeric.livecode
+--                           ^^ constant.numeric.livecode
+
     subtract 1 from j
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   # repeat x times
   repeat 2 times
+--^^^^^^ keyword.control.flow.livecode
+--       ^ constant.numeric.livecode
+--         ^^^^^ keyword.control.flow.livecode
     add 1 to i
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   # repeat forever
   repeat forever
+--^^^^^^^^^^^^^^ keyword.control.flow.livecode
     add 1 to i
     if i > 100 then exit repeat
+--  ^^ keyword.control.flow.livecode
+--             ^^^^ keyword.control.flow.livecode
+--                  ^^^^^^^^^^^ keyword.control.flow.livecode
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   -- repeat while
   repeat while x < 2
+--^^^^^^^^^^^^ keyword.control.flow.livecode
+--               ^ keyword.operator.livecode
+--                 ^ constant.numeric.livecode
     add 1 to x
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   # repeat until
   put 0 into x
   repeat until x > 3
+--^^^^^^^^^^^^ keyword.control.flow.livecode
+--               ^ keyword.operator.livecode
+--                 ^ constant.numeric.livecode
     add 1 to x
   end repeat
+--^^^^^^^^^^ keyword.control.flow.livecode
   
   repeat for each item tItem in tList
+--^^^^^^^^^^^^^^^ keyword.control.flow.livecode
     add 1 to x
   end repeat
   
@@ -379,10 +437,16 @@ end myPrivateCommand
 
 private on myPrivateMessage
   try
+--^^^ keyword.control.flow.livecode
     put 1 / 0
   catch e
+--^^^^^ keyword.control.flow.livecode
+--      ^ variable.other.livecode
     put "that didn't work so well"
+  finally
+--^^^^^^^ keyword.control.flow.livecode
   end try
+--^^^^^^^ keyword.control.flow.livecode
   
   throw "it worked" && "!"
 end myPrivateMessage
@@ -452,6 +516,7 @@ on makeSomething
 
   if a  
   then 
+--^^^^ keyword.control.flow.livecode
      put a
      put b
      put c
@@ -493,6 +558,7 @@ on mouseDown/*ca */
         put "#" \
         put "*"  \
         put "*"
+--^^^^^^^^^^^^^^ comment
   if f = 1 then
   end if
   --    /*what is going on
@@ -514,6 +580,7 @@ on mouseMove
 end mouseMove
 
 getprop myProp[begin]
+--^^^^^ keyword.control.function.property.begin.livecode
   beep
 end myProp
 

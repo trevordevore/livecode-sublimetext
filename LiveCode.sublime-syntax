@@ -320,9 +320,11 @@ contexts:
       set:
         - match: '\s*{{eol_or_comment}}'
           set: inside_control_flow_if_block
-        - match: '' # if the above didn't match, then it is a single line if block
+        - match: ''
+          comment: "the above didn't match, therefore it must be a single line if block"
           set: inside_control_flow_if_single_line
-    #- match: '{{eol_or_comment}}' # exit the if scope if there is no `then` on the same logical line
+    - match: '{{eol_or_comment}}'
+      comment: 'uncomment `pop: true` below to exit the if scope if there is no `then` on the same logical line. Apparently it is legal to have the `then` on the next line, hence why it is commented.'
     #  pop: true
     - include: expression
 
@@ -422,7 +424,7 @@ contexts:
       push:
         - include: expression
         - match: '$\n'
-          #scope: invalid.illegal.missing-put-target.livecode
+          comment: 'with no into|before|after, the message will be put to the LiveCode Console aka the Message Box'
           pop: true
         - match: '\s+(into|before|after)\s'
           captures:
