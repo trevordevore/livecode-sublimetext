@@ -19,6 +19,9 @@ contexts:
       captures:
         1: keyword.script.name.livecode
       push: [root, pop_after_string]
+    - include: comment
+    - match: '(?=\S)'
+      push: root
 
   pop_after_string:
     - include: string
@@ -421,7 +424,7 @@ contexts:
       pop: true
 
   put:
-    - match: '\s*(put)\s+'
+    - match: '\s*\b(put)\s+'
       captures:
         1: keyword.other.livecode
       push:
