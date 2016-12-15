@@ -22,6 +22,11 @@ on libraryStack
 end libraryStack
 
 
+command processParams
+  put ($# - 1) into tVar
+end processParams
+
+
 setProp uCustomProp pValue
   put pValue into sLocalVar
 end uCustomProp
