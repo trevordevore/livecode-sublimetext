@@ -1,7 +1,8 @@
 <snippet>
 	<content><![CDATA[if ${1:condition} then
-	${0:# code...}
-end if]]></content>
+	${2:# code...}
+end if
+$0]]></content>
 	<tabTrigger>if</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>if …</description>
