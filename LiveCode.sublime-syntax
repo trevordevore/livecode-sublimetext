@@ -131,7 +131,7 @@ contexts:
         - include: line_continuation_char
         - match: '$\n?'
           pop: true
-    - match: '#'
+    - match: '(?<!\$)#'
       scope: punctuation.definition.comment.livecode
       push:
         - meta_scope: comment.line.hash.livecode
