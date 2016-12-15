@@ -8,10 +8,10 @@ first_line_match: '^script\s+"[^"]+"'
 scope: source.livecode
 variables:
   identifier: '[_A-Za-z][A-Za-z0-9._]*'
-  constants: '\b(arrow|backslash|busy|colon|comma|cr|linefeed|lf|crlf|cross|done|down|eight|empty|eof|false|five|formfeed|four|hand|help|ibeam|left|nine|null|one|pi|plus|quote|return|right|scrollbarfactor|seven|six|slash|space|tab|ten|three|true|two|up|watch|zero)\b'
+  constants: '\b(crlf|arrow|backslash|busy|colon|comma|cr|linefeed|lf|cross|done|down|eight|empty|eof|false|five|formfeed|four|hand|help|ibeam|left|nine|null|one|pi|plus|quote|return|right|scrollbarfactor|seven|six|slash|space|tab|ten|three|true|two|up|watch|zero)\b'
   eol_or_comment: '(?=$|--|/\*|#)'
   operators: '[\+&=></^*-]|\b(?:is not among the keys of|is among the keys of|is not among|is not in|is not strictly|is not within|is a|is among|is in|is not a|is strictly|is within|begins with|ends with|there is a|there is no|contains|bitand|bitnot|bitor|bitxor|div|wrap|is|not|and|or|mod)\b'
-  reserved_variables: '\b(?:me|(?:this)|(?:the )?(?:number of elements of|target|result|short name of|number of items of|number of lines of|last char of|first char of|last item of|first item of|first line of|last line of|number of chars of|long id of|short id of|long name of|short name of|abbreviated id of))\b'
+  reserved_variables: '\$#|\b(?:me|this|(?:the )?(?:number of elements of|target|result|short name of|number of items of|number of lines of|last char of|first char of|last item of|first item of|first line of|last line of|number of chars of|long id of|short id of|long name of|short name of|abbreviated id of))\b'
 
 contexts:
   main:
@@ -41,6 +41,8 @@ contexts:
     - match: '\s*((?:exit|next)\s+repeat)\b'
       captures:
         1: keyword.control.flow.livecode
+    - match: '\)'
+      scope: invalid.illegal.stray-bracket.livecode
 
   line_continuation_char:
     - match: '\\(?=$|\s)'
@@ -335,13 +337,13 @@ contexts:
   expression:
     - include: string
     - include: number
+    - match: '{{reserved_variables}}'
+      scope: variable.language.livecode
     - include: comment
     - include: constant
     - match: '{{operators}}'
       scope: keyword.operator.livecode
     - include: line_continuation_char
-    - match: '{{reserved_variables}}'
-      scope: variable.language.livecode
     - match: '({{identifier}})\s*(\[)'
       captures:
         1: variable.other.livecode
@@ -367,6 +369,9 @@ contexts:
           pop: true
         - match: ','
           scope: punctuation.separator.parameters.livecode
+        - match: '$\n'
+          comment: 'should we scope this as invalid.illegal.expected-close-paren ?'
+          pop: true
         - include: expression
     - match: '\('
       scope: punctuation.section.group.begin.livecode
@@ -374,6 +379,9 @@ contexts:
         - meta_scope: meta.group.livecode
         - match: '\)'
           scope: punctuation.section.group.end.livecode
+          pop: true
+        - match: '$\n'
+          comment: 'should we scope this as invalid.illegal.expected-close-paren ?'
           pop: true
         - include: expression
 
