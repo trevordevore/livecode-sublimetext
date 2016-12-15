@@ -10,7 +10,7 @@ variables:
   identifier: '[_A-Za-z][A-Za-z0-9._]*'
   constants: '(arrow|backslash|busy|colon|comma|crlf|cross|done|down|eight|empty|eof|false|five|formfeed|four|hand|help|ibeam|left|nine|null|one|pi|plus|quote|return|right|scrollbarfactor|seven|six|slash|space|tab|ten|three|true|two|up|watch|zero)'
   eol_or_comment: '(?=$|--|/\*|#)'
-  operators: '[&=></-]|\b(?:is|not|and|contains)\b'
+  operators: '[\+&=></-^*]|\b(?:is not among the keys of|is among the keys of|is not among|is not in|is not strictly|is not within|is a|is among|is in|is not a|is strictly|is within|begins with|ends with|there is a|there is no|contains|bitand|bitnot|bitor|bitxor|div|wrap|is|not|and|or|mod)\b'
   reserved_variables: '\b(?:me|(?:the )?(?:number of elements of|target|result|short name of|number of items of|last char of|number of chars of))\b'
 
 contexts:
