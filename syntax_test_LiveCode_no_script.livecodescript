@@ -16,3 +16,20 @@ function myFunction
 end myFunction
 --^ keyword.control.function.end.livecode
 --  ^^^^^^^^^^ entity.name.function.end.livecode
+
+command processParams
+  put ($# - 1) into tVar
+--    ^ punctuation.section.group.begin.livecode
+--     ^^ variable.language.livecode
+--       ^ - variable
+--      ^^^^^^^^^^^^^^^^^ - comment 
+--           ^ punctuation.section.group.end.livecode
+  )
+--^ invalid.illegal.stray-bracket.livecode
+
+  put abc(def
+  
+  put (unclosedParen
+  
+end processParams
+--^ keyword.control.function.end.livecode
