@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[return ${0:# code...} for error]]></content>
-	<tabTrigger>rete</tabTrigger>
+	<tabTrigger>return error</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>return … for error</description>
 </snippet>

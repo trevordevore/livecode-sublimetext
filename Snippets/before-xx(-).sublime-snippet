@@ -2,7 +2,7 @@
 	<content><![CDATA[before ${1:HandlerName} ${2:param}
 	${0:# code...}
 end ${1}]]></content>
-	<tabTrigger>befo</tabTrigger>
+	<tabTrigger>before</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>command …</description>
 </snippet>

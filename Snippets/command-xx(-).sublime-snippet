@@ -2,7 +2,7 @@
 	<content><![CDATA[${1:private }command ${2:CommandName} ${3:param}
 	${0:# code...}
 end ${2}]]></content>
-	<tabTrigger>comm</tabTrigger>
+	<tabTrigger>command</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>command …</description>
 </snippet>

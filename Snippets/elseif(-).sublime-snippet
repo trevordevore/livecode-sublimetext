@@ -2,7 +2,7 @@
 	<content><![CDATA[else if ${1:condition} then
 	${0:# code...}
 ]]></content>
-	<tabTrigger>elseif</tabTrigger>
+	<tabTrigger>else if</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>else if …</description>
 </snippet>
