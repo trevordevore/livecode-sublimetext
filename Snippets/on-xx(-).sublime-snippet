@@ -1,8 +1,8 @@
 <snippet>
-	<content><![CDATA[${1:private }on ${2:HandlerName} ${3:param}
+	<content><![CDATA[on ${1:HandlerName} ${2:param}
 	${0:# code...}
-end ${2}]]></content>
-	<tabTrigger>comm</tabTrigger>
+end ${1}]]></content>
+	<tabTrigger>on</tabTrigger>
 	<scope>source.livecode</scope>
-	<description>command …</description>
+	<description>on …</description>
 </snippet>
