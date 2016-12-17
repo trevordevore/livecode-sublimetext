@@ -6,23 +6,27 @@ global gGlobalVar2 -- just a variable for testing
 local sLocalVar = true /* Default to true */
 local sLocalVar2 = "a value"
 
-constant kConstant = red
+constant kConstant = "red"
 constant kConstant2 = "some value"
 
 on libraryStack
   if the short name of the target is not me then pass libraryStack
-  
-  /* This is a 
+
+  local tVar
+
+  /* This is a
   multiline comment
   */
-  
+
   put "The \ character is the " & \
         "line continuation character" into tVar
-  
+
 end libraryStack
 
 
 command processParams
+  local tVar
+
   put ($# - 1) into tVar
 end processParams
 
@@ -34,14 +38,14 @@ end uCustomProp
 
 setProp uCustomProp2[pCategory] pValue
   set the uCustomProp2[pCategory] of me to pValue
-  
+
   # line continuation.
   # This:
   if "1" is 1 then \
         return "something"
   else \
         return "something else"
-  
+
   # Is the same as this:
   if "1" is 1 then return "something"
   else return "something else"
@@ -61,35 +65,38 @@ end myCustomProp2
 function myFunction pParam1, @rParam2
   switch pParam1
     case "1"
-      
+
       break
     case "2"
-      
+
       break
     case 3
-      
+
       break
     default
       return "test" for value
   end switch
-  
+
   return myPrivateFunction(pParam1, rParam2)
 end myFunction
 
 
-command myCommand
+command myCommand pParam
   local tError
-  
+
   if 1 is "1" then return "nothing" # a comment
-  
-  myPrivateCommand pParama
+
+  myPrivateCommand pParam
   put the result into tError
-  
+
   return tError for error
 end myCommand
 
 
 private function myPrivateFunction pParam1, @xParam2
+  local tArray
+  local i,j,x
+
   # with counterVar = startvalue to endvalue
   repeat with i = 1 to the number of elements of tArray
     if i = 1 then
@@ -98,57 +105,61 @@ private function myPrivateFunction pParam1, @xParam2
       exit repeat
     end if
   end repeat
-  
+
   # with counterVar = startvalue to endvalue step x
   repeat with i = 1 to 20 step 2
-    
+
   end repeat
-  
+
   # with counterVar = startvalue down to endvalue
   repeat with i = 20 down to 10
     subtract 1 from j
   end repeat
-  
+
   # repeat x times
   repeat 2 times
     add 1 to i
   end repeat
-  
+
   # repeat forever
   repeat forever
     add 1 to i
     if i > 100 then exit repeat
   end repeat
-  
+
   -- repeat while
   repeat while x < 2
     add 1 to x
   end repeat
-  
+
   # repeat until
   put 0 into x
   repeat until x > 3
     add 1 to x
   end repeat
-  
+
+  local tList, tVar
+
   repeat for each item tItem in tList
     add 1 to x
   end repeat
-  
+
   repeat for each key tKey in tArray
     put tKey & ":" && tArray[tKey] & cr after tVar
   end repeat
-  
+
   repeat for each element tElement in tArray
-    
+
   end repeat
 end myPrivateFunction
 
 
 private command myPrivateCommand pParam1
+  local i
+
   if 1 is 1 then
     if i is 5 then next repeat
-    
+
     repeat with i = 1 to 10
       exit repeat
     end repeat
@@ -162,7 +173,7 @@ private on myPrivateMessage
   catch e
     put "that didn't work so well"
   end try
-  
+
   throw "it worked" && "!"
 end myPrivateMessage
 
@@ -208,15 +219,15 @@ on makeSomething
   if a then put c
   if c then put a
 
-  if a then 
-     if b then 
-     else 
-     end if 
-  else  
-  end if 
+  if a then
+     if b then
+     else
+     end if
+  else
+  end if
 
 
-  if a then 
+  if a then
      doSomething
   else put a
 
@@ -229,24 +240,24 @@ on makeSomething
   if a then doSomething
   else if d then put c
 
-  if a  
-  then 
+  if a
+  then
      put a
      put b
      put c
-  end if 
+  end if
 
   if a
-  then 
+  then
      put a
-  else 
+  else
      put b
-  end if 
+  end if
 
   if a then
-     if b then get c else get d 
-     else 
-        doSomethingElse 
+     if b then get c else get d
+     else
+        doSomethingElse
      end if
 
   end makeSomething
@@ -280,7 +291,7 @@ on mouseDown/*ca */
 else
   put "a"
 end if
-if a is not b then beep 
+if a is not b then beep
 end mouseDown
 
 
