@@ -25,14 +25,15 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
 
                     host = "localhost"
                     port = 61373
+                    debug = False
 
                     livecode_settings = window_settings.get('livecode')
                     if livecode_settings != None:
                         livecode_settings = livecode_settings.get('notify_server')
                         if livecode_settings != None:
                             host = livecode_settings.get('host', host)
-                            host = livecode_settings.get('port', port)
-                    debug = False
+                            port = livecode_settings.get('port', port)
+                            debug = livecode_settings.get('debug', debug)
 
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
 
