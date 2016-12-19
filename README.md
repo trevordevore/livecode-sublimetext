@@ -1,6 +1,6 @@
 livecode-sublimetext
 ==============
-LiveCode Language Package for SublimeText
+LiveCode Package for Sublime Text
 
 # What does this package do?
 
