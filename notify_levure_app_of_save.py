@@ -1,6 +1,8 @@
 import sublime
 import sublime_plugin
 import re
+import socket
+import urllib
 
 class LevureAppNotify(sublime_plugin.EventListener):
     def on_post_save(self, view):
@@ -19,4 +21,17 @@ class LevureAppNotify(sublime_plugin.EventListener):
             if region.a >= 0:
                 stack_name = re.search('"([-a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
 
-            print('stack name and filename', stack_name, view.file_name())
+                host ="localhost"
+                port = 62475
+
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
+                s.connect((host,port))
+                query = {'stack': stack_name, 'filename': view.file_name()}
+                data = urllib.parse.urlencode(query) + "\n"
+                s.send(data.encode())
+                data = s.recv(1024).decode()
+                s.close()
+                if data != 'success':
+                    print('error updating script in LiveCode: ' + data)
+                else:
+                    print('script updated in LiveCode')
