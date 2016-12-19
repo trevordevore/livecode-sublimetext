@@ -3,7 +3,6 @@ import sublime_plugin
 import re
 import socket
 import urllib
-import errno
 
 class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
     def on_post_save(self, view):
@@ -24,8 +23,15 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
                 if region.a >= 0:
                     stack_name = re.search('"([-a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
 
-                    host ="localhost"
-                    port = 62475
+                    host = "localhost"
+                    port = 61373
+
+                    livecode_settings = window_settings.get('livecode')
+                    if livecode_settings != None:
+                        livecode_settings = livecode_settings.get('notify_server')
+                        if livecode_settings != None:
+                            host = livecode_settings.get('host', host)
+                            host = livecode_settings.get('port', port)
                     debug = False
 
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
@@ -35,6 +41,7 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
                         query = {'stack': stack_name, 'filename': view.file_name()}
                         data = urllib.parse.urlencode(query) + "\n"
                         s.send(data.encode())
+                        # s.sendto(data.encode(), (host, port))
                         data = s.recv(1024).decode()
                         s.close()
                         if data != 'success':
