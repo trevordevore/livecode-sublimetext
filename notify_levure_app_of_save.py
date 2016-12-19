@@ -3,8 +3,9 @@ import sublime_plugin
 import re
 import socket
 import urllib
+import errno
 
-class LevureAppNotify(sublime_plugin.EventListener):
+class LiveCode(sublime_plugin.EventListener):
     def on_post_save(self, view):
         # 1. Get script only stack name. line 1: script "Name" [done]
         # 2. Get project key from project settings
@@ -12,7 +13,7 @@ class LevureAppNotify(sublime_plugin.EventListener):
         # 4. Get response from LiveCode IDE
 
         # We are only concerned with files using Livecode syntax
-        if view.settings().get('syntax') == 'Packages/LiveCode/LiveCode.sublime-syntax':
+        if view.settings().get('syntax').endswith(self.__class__.__name__+'.sublime-syntax'):
             stack_name = None
 
             # Get the script only stack name
@@ -23,15 +24,21 @@ class LevureAppNotify(sublime_plugin.EventListener):
 
                 host ="localhost"
                 port = 62475
+                debug = False
 
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
-                s.connect((host,port))
-                query = {'stack': stack_name, 'filename': view.file_name()}
-                data = urllib.parse.urlencode(query) + "\n"
-                s.send(data.encode())
-                data = s.recv(1024).decode()
-                s.close()
-                if data != 'success':
-                    print('error updating script in LiveCode: ' + data)
-                else:
-                    print('script updated in LiveCode')
+
+                try:
+                    s.connect((host,port))
+                    query = {'stack': stack_name, 'filename': view.file_name()}
+                    data = urllib.parse.urlencode(query) + "\n"
+                    s.send(data.encode())
+                    data = s.recv(1024).decode()
+                    s.close()
+                    if data != 'success':
+                        print('error updating script in LiveCode: ' + data)
+                    else:
+                        print('script updated in LiveCode')
+                except socket.error as exc:
+                    if debug:
+                        print(exc)
