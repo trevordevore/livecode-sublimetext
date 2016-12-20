@@ -46,7 +46,10 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
                         data = s.recv(1024).decode()
                         s.close()
                         if data != 'success':
-                            print('error updating script in LiveCode: ' + data)
+                            if data.startswith('error: 360,'):
+                                print('error: script is being executed within Livecode')
+                            else:
+                                print('error updating script in LiveCode: ' + data)
                         else:
                             print('script updated in LiveCode')
                     except socket.error as exc:

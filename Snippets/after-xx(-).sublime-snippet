@@ -4,5 +4,5 @@
 end ${1}]]></content>
 	<tabTrigger>after</tabTrigger>
 	<scope>source.livecode</scope>
-	<description>command …</description>
+	<description>after …</description>
 </snippet>
