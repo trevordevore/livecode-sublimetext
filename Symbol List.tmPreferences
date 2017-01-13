@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
-	<key>name</key>
-	<string>Symbol List</string>
-	<key>scope</key>
-	<string>entity.name.function.end.livecode, entity.name.function.property.end.livecode, entity.name.function.handler.end.livecode</string>
-	<key>settings</key>
-	<dict>
-		<key>showInSymbolList</key>
-		<integer>0</integer>
-	</dict>
+    <key>name</key>
+    <string>Symbol List</string>
+    <key>scope</key>
+    <string>entity.name.function.end.livecode, entity.name.function.property.end.livecode, entity.name.function.handler.end.livecode</string>
+    <key>settings</key>
+    <dict>
+        <key>showInSymbolList</key>
+        <integer>0</integer>
+        <key>showInIndexedSymbolList</key>
+        <integer>0</integer>
+    </dict>
 </dict>
 </plist>
