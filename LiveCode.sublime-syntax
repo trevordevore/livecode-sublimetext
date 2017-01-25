@@ -12,7 +12,7 @@ variables:
   lbound: '(?<=^|[^{{identifier_class}}])(?=[a-zA-Z])'
   rbound: '(?<=[a-zA-Z])(?=$|[^{{identifier_class}}])'
   constants: '{{lbound}}((?i)arrow|backslash|busy|colon|comma|crlf|linefeed|cr|lf|cross|done|down|eight|empty|eof|false|five|formfeed|four|hand|help|ibeam|left|nine|null|one|pi|plus|quote|return|right|scrollbarfactor|seven|six|slash|space|tab|ten|three|true|two|up|watch|zero){{rbound}}'
-  eol_or_comment: '(?=$|--|/\*|#)'
+  eol_or_comment: '(?=$|--|//|/\*|#)'
   operators: '[\+&=></^*-]|{{lbound}}(?i:is not among the keys of|is among the keys of|is not among|is not in|is not strictly|is not within|is a|is among|is in|is not a|is strictly|is within|begins with|ends with|there is a|there is no|contains|bitand|bitnot|bitor|bitxor|div|wrap|is|not|and|or|mod){{rbound}}'
   reserved_variables: '\$#|{{lbound}}(?i:me|(?i:this)|(?i:the )?(?i:number of elements of|target|result|short name of|extents of|number of items of|number of lines of|last char of|number of chars of|long id of|short id of|long name of|short name of|abbreviated id of|stack|card|group|button|widget|field|scrollbar|control|id)){{rbound}}'
   keywords: '{{lbound}}(?i:abbreviated|addmax|addover|addpin|admin|any|array|as|ascending|at|back|binfile|black|blend|bold|box|browse|brush|bucket|button|by|byte|bytes|card|cascade|character|characters|clear|codepoint|codepoints|codeunit|codeunits|colorpalette|combobox|comn:|control|curve|dateitems|datetime|default|descending|dropper|each|effective|eighth|element|english|eraser|field|fifth|file|finally|first|fourth|from|front|graphic|gray|grevappicon|grevprofilereadonly|grevsmallappicon|image|in|int1|int2|int4|integer|internet|intersect|inverse|it|italic|item|items|last|line|lines|link|long|lpt1:|magnifier|marked|maximize|me|menu|menuitem|message box|middle|milliseconds|minimize|modem:|ninth|noop|normal|notsrcand|notsrcandreverse|notsrcbic|notsrccopy|notsrcor|notsrcorreverse|notsrcxor|numeric|of|onto|opaque|option|oval|paint|paragraph|paragraphs|pencil|plain|player|point|pointer|polygon|popup|previous|printer:|pulldown|real4|real8|recent|rectangle|regular|relative|resfile|reverse|roundrect|scrollbar|second|seconds|segment|segments|select|selection|sentence|sentences|set|seventh|shadow|short|sixth|spray can|srcand|srcandreverse|srcbic|srccopy|srcor|srcorreverse|srcxor|standard|stderr|stdin|stdout|strikeout|string|subover|subpin|surround|system|tabbed|target|templateaudioclip|templatebutton|templatecard|templateeps|templatefield|templategraphic|templategroup|templateimage|templateplayer|templatescrollbar|templatestack|templatevideoclip|tenth|text|the|then|third|threedbox|ticks|title|to|for|token|top|transparent|trueword|truewords|uint1|uint2|uint4|underline|until|url|using|while|white|whole|with|without|word|words){{rbound}}'
@@ -138,6 +138,13 @@ contexts:
       scope: punctuation.definition.comment.livecode
       push:
         - meta_scope: comment.line.double-dash.livecode
+        - include: line_continuation_char
+        - match: '$\n?'
+          pop: true
+    - match: '//'
+      scope: punctuation.definition.comment.livecode
+      push:
+        - meta_scope: comment.line.double-slash.livecode
         - include: line_continuation_char
         - match: '$\n?'
           pop: true
