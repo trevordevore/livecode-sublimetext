@@ -14,44 +14,46 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
         # We are only concerned with files using Livecode syntax
         if view.settings().get('syntax').endswith('LiveCode.sublime-syntax'):
             window_settings = view.window().project_data()
-            if window_settings.get('livecode').get('notify_on_save', False):
-                stack_name = None
+            if window_settings:
+              livecode_window_settings = window_settings.get('livecode')
+              if livecode_window_settings and livecode_window_settings.get('notify_on_save', False):
+                  stack_name = None
 
-                # Get the script only stack name
-                # \A matches beginning of file
-                region = view.find('\Ascript "([-.a-zA-Z0-9_\s\?!]+)"', 0, sublime.IGNORECASE)
-                if region.a >= 0:
-                    stack_name = re.search('"([-.a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
+                  # Get the script only stack name
+                  # \A matches beginning of file
+                  region = view.find('\Ascript "([-.a-zA-Z0-9_\s\?!]+)"', 0, sublime.IGNORECASE)
+                  if region.a >= 0:
+                      stack_name = re.search('"([-.a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
 
-                    host = "localhost"
-                    port = 61373
-                    debug = False
+                      host = "localhost"
+                      port = 61373
+                      debug = False
 
-                    livecode_settings = window_settings.get('livecode')
-                    if livecode_settings != None:
-                        livecode_settings = livecode_settings.get('notify_server')
-                        if livecode_settings != None:
-                            host = livecode_settings.get('host', host)
-                            port = livecode_settings.get('port', port)
-                            debug = livecode_settings.get('debug', debug)
+                      livecode_settings = window_settings.get('livecode')
+                      if livecode_settings != None:
+                          livecode_settings = livecode_settings.get('notify_server')
+                          if livecode_settings != None:
+                              host = livecode_settings.get('host', host)
+                              port = livecode_settings.get('port', port)
+                              debug = livecode_settings.get('debug', debug)
 
-                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
+                      s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #socket.SOCK_DGRAM
 
-                    try:
-                        s.connect((host,port))
-                        query = {'stack': stack_name, 'filename': view.file_name()}
-                        data = urllib.parse.urlencode(query) + "\n"
-                        s.send(data.encode())
-                        # s.sendto(data.encode(), (host, port))
-                        data = s.recv(1024).decode()
-                        s.close()
-                        if data != 'success':
-                            if data.startswith('error: 360,'):
-                                print('error: script is being executed within Livecode')
-                            else:
-                                print('error updating script in LiveCode: ' + data)
-                        else:
-                            print('script updated in LiveCode')
-                    except socket.error as exc:
-                        if debug:
-                            print(exc)
+                      try:
+                          s.connect((host,port))
+                          query = {'stack': stack_name, 'filename': view.file_name()}
+                          data = urllib.parse.urlencode(query) + "\n"
+                          s.send(data.encode())
+                          # s.sendto(data.encode(), (host, port))
+                          data = s.recv(1024).decode()
+                          s.close()
+                          if data != 'success':
+                              if data.startswith('error: 360,'):
+                                  print('error: script is being executed within Livecode')
+                              else:
+                                  print('error updating script in LiveCode: ' + data)
+                          else:
+                              print('script updated in LiveCode')
+                      except socket.error as exc:
+                          if debug:
+                              print(exc)
