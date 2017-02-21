@@ -27,7 +27,7 @@ To send requests to a specified server and port whenever LiveCode files are save
 
 # Screencasts
 
-- [Configuring Sublime Text User Settings when Working with LiveCode](https://www.youtube.com/watch?v=RkhrHdah0zY
+- [Configuring Sublime Text User Settings when Working with LiveCode](https://www.youtube.com/watch?v=RkhrHdah0zY)
 - [Connecting a Sublime Text project to a Levure appllication running in the LiveCode IDE](https://www.youtube.com/watch?v=gkVo35Tb3ck)
 
 # Plugin installation
