@@ -35,3 +35,4 @@ To install via Package Control, do the following:
 2. When the plugin list appears, type `livecode`. Among the entries you should see `LiveCode`. If that entry is not highlighted, use the keyboard or mouse to select it.
 
 [pc]: https://sublime.wbond.net/installation
+[cmd]: http://docs.sublimetext.info/en/sublime-text-3/extensibility/command_palette.html
