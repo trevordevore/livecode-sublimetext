@@ -25,6 +25,11 @@ To send requests to a specified server and port whenever LiveCode files are save
 }
 ```
 
+# Screencasts
+
+- [Configuring Sublime Text User Settings when Working with LiveCode] https://www.youtube.com/watch?v=RkhrHdah0zY
+- [Connecting a Sublime Text project to a Levure appllication running in the LiveCode IDE](https://www.youtube.com/watch?v=gkVo35Tb3ck)
+
 # Plugin installation
 Please use [Package Control][pc] to install the linter plugin. This will ensure that the plugin will be updated when new versions are available. If you want to install from source so you can modify the source code, you probably know what you are doing so we won’t cover that here.
 
