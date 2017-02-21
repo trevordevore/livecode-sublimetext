@@ -25,7 +25,7 @@ To send requests to a specified server and port whenever LiveCode files are save
 }
 ```
 
-### Plugin installation
+# Plugin installation
 Please use [Package Control][pc] to install the linter plugin. This will ensure that the plugin will be updated when new versions are available. If you want to install from source so you can modify the source code, you probably know what you are doing so we won’t cover that here.
 
 To install via Package Control, do the following:
