@@ -33,3 +33,5 @@ To install via Package Control, do the following:
 1. Within Sublime Text, bring up the [Command Palette][cmd] and type `install`. Among the commands you should see `Package Control: Install Package`. If that command is not highlighted, use the keyboard or mouse to select it. There will be a pause of a few seconds while Package Control fetches the list of available plugins.
 
 2. When the plugin list appears, type `livecode`. Among the entries you should see `LiveCode`. If that entry is not highlighted, use the keyboard or mouse to select it.
+
+[pc]: https://sublime.wbond.net/installation
