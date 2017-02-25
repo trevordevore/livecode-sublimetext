@@ -10,19 +10,34 @@ Auto-complete is also provided for all keywords, properties, functions, and comm
 
 # Notifying LiveCode of script only stack updates
 
-To send requests to a specified server and port whenever LiveCode files are saved add the following to your Sublime Text `.sublime-project` file.
+To send requests to a specified server and port whenever LiveCode files are saved, create a Sublime Text project for your folder tree.  Once you have done that, edit the  `.sublime-project` file.  Here is an example.
+You will need to modify "MyProject" and possibly the port number that you are using.
 
 ```
-"livecode":
 {
-  "notify_on_save": true,
-  "notify_server":
-  {
-    "host": "localhost",
-    "port": PORT_NUMBER,
-    "debug": false
-  }
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"_builds"
+			],
+			"path": ".",
+			"name": "MyProject",
+		}
+	],
+	"livecode":
+	{
+  		"notify_on_save": true,
+  		"notify_server":
+  		{
+    		"host": "localhost",
+    		"port": 61373,
+    		"debug": false
+  		}
+	}
 }
+
 ```
 
 # Screencasts
