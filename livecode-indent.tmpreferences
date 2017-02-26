@@ -11,7 +11,7 @@
 		<key>increaseIndentPattern</key>
 			<string>^\s*((on+?\s+?.+)|(command+?\s+?.+)|(function+?\s+?.+)|(if+?\s+?.+(then$))|(\s*else$)|(repeat+?\s+?.+)|(switch+?\s+?.+)|(case+?\s+?.+)|(default+?$)|try$|(catch\s+?.+))</string>
 		<key>decreaseIndentPattern</key>
-			<string>(\\s*end\\s+?.+)|(case\\s+?.+)|(\\s*default)|(^\\s*else$)|(\\s*catch\\s+?.+)</string>
+			<string>(\s*end\s+?.+)|(case\s+?.+)|(\s*default)|(^\s*else$)|(\s*catch\s+?.+)</string>
 		<key>disableIndentNextLinePattern</key>
 			<!-- rules for when then next line would not be indented further -->
 			<string></string>
