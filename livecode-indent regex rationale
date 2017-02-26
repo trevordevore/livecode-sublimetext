@@ -1,0 +1,96 @@
+RegEx can be complicated, so here is the rationale for the regex for the various sections in the tab settings:
+
+increaseIndentPattern:
+	^\s*?															Begin the line with 0..n whitespace characters due to indents or other things
+	(
+	(on\s+?.+)													"on", followed by at least one space, then a handler name - e.g. "on myHandler"
+
+	|((private\s)?((command|function)\s+?.+))			Either "private" and a space or neither, then either "command" or "function",
+																	then a space, a function name and perhaps parameters, e.g. "private function myFunction a, b" or "function myFunction a, b"
+	
+	|((else?\s*?)?(if\s+?.+then\s*?)((#|--).*?)?$)	Either "else" and a space or neither, then "if", a space, some condition,
+																	"then", and possibly some spaces (but nothing else, i.e. no other commands/functions) following.  The line can end with a comment, either beginning with "#" or "--".  e.g. "if x then", or "if x then #this is why", or "else if x then --perhaps nothing".  The goal is to distinguish between if-then{-else} blocks and single-line if-then{-else} statements - the latter do not get indented.
+
+	|(else\s*?((#|--).*?)?$)								"else", then spaces (or not), but no other statements.  The line can end with a
+																	comment, either beginning with "#" or "--".  e.g. "else", or "else #we have work to do" or "else -- i forget".
+
+	|(repeat\s+?.+)											"repeat", then at least one space, and the rest of the statement, e.g. "repeat
+																	100 times" or "repeat with i = 1 to 10" or "repeat for each x in y"
+
+	|(switch\s+?.+)											"switch", then at least 1 space, and the rest of the expression, e.g. "switch x"
+																	See below for a note on the indenting of switch/case/default.
+
+	|(case\s+?.+)												"case", then at least one space, then the value or condition, e.g. "case 1".
+																	See below for a note on the indenting of switch/case/default
+
+	|(default\s*?.+)											"default" and whatever after it.  I didn't bother to use the indent rules to
+																	enforce default syntax, because I can't think of any time other than in a "switch" where "default" would be used, and if the user screws up the syntax, the linter should complain.  At any rate, the line could still end with a comment, legitimately.  e.g. "default", "default -- something", or "default #nothing else matters".
+																	See below for a note on the indenting of switch/case/default
+
+	|(try\s*?.+)												"try" and whatever follows.  Linter can enforce syntax, but I want to make sure
+																	we allow the user to put a comment at the end of the line, thus adding the ".+"
+																	e.g. "try" or "try #something"
+
+	|(catch\s+?.+)												"catch", then a space, and the error variable, e.g. "catch a"
+
+	|(finally\s*?.*)											"finally", and if desired, some whitespace, and maybe a comment, e.g.
+																	"finally", or "finally #we're done".  Let the linter catch if something else was put at the end of the line, where I am recognizing that there might be a comment, instead.
+
+	|((#|--|)\s*?&lt;\s*?[^/].*&gt;))					Mikey's favorite custom construct, the block.  The block is not something that
+																	LC handles any differently than any other bit of code, but we can have ST indent it, which means I can fold it.  Heh.  Heh.  Heh.  It's a comment with a tag that I use to mark a section of code without having to write a handler and deal with variable scope issues.
+																	"#" or "--" then perhaps one or more spaces, then "<", then perhaps more spaces, then anything that isn't a slash "/", then more text, then ">".
+																	e.g. "#<v. 3.0>", or "# <loads the documents>".  The reason for excluding the "/" is because that is an end tag - it will mark the end of the block, and we will unindent at that point.
+	)
+
+NOTE:  Switch and case are set to indent and unindent the way they are b/c you cannot force a double-back indent.  Consider
+switch x
+	case 1
+		beep
+	case 2
+		beep
+	default
+		beep
+At this point we are two tab levels in.  There is no way to get "end case" to move us back two levels, only one.  Therefore, in the decreaseIndentPattern, we have "case" and "default", to get the indent to be at the same level as "switch".
+switch x
+case 1
+	beep
+case 2
+	beep
+default
+	beep
+end case
+
+
+
+decreaseIndentPattern
+	^\s*														Line may or may not begin with whitespace
+	(
+	(end\s+?.+)												"end", then whitespace, then the handler name, e.g. "end mouseUp"
+	
+	|(case\s+?.+)											"case", then at least one space, then the value or condition, e.g. "case 1".
+																See above for a note on the indenting of switch/case/default
+	
+	|(default\s*?.*)										"default" and whatever after it.  I didn't bother to use the indent rules to
+																enforce default syntax, because I can't think of any time other than in a "switch" where "default" would be used, and if the user screws up the syntax, the linter should complain.  At any rate, the line could still end with a comment, legitimately.  e.g. "default", "default -- something", or "default #nothing else matter".
+																See above for a note on the indenting of switch/case/default
+	
+	|(else.*)												"else" and then whatever.  Every "else" line needs to pull back one indent,
+																whether it is a straight "else", or "else if x=y then"
+	
+	|(catch\s+?.+)											"catch", then a space, and the error variable, e.g. "catch a"
+	
+	|(finally\s*?.*)										"finally", and if desired, some whitespace, and maybe a comment, e.g.
+																"finally", or "finally #we're done".  Let the linter catch if something else was put at the end of the line, where I am recognizing that there might be a comment, instead.
+	
+	|((#|--|)\s*?&lt;/.*&gt;.*)						End of a block (see above for discussion of a block)
+																"#" or "--" then perhaps one or more spaces, then "<", then perhaps more spaces, then a slash "/", then more text, then ">".
+																e.g. "#</v. 3.0>", or "# </loads the documents>". 
+	)
+
+
+
+disableIndentNextLinePattern
+	^\s*?(if\s+?.+?then\s+?.+)							whitespace, perhaps, then "if", then whitespace, then the condition, "then",
+																at least one space, and more text.  e.g. "if x=y then beep".
+																I'm trying to make sure we catch single-line if-then and if-then-else statements, as those are NOT going to have indented code below them.  Note that this regex will also match the if/then that has a comment on the end
+																(e.g. "if x=y then #make sure we notify the user"), BUT, in that case, the indent will override the "do nothing" rule.
