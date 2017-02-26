@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>LiveCode Script Indentation</string>
+	<key>scope</key>
+	<string>source.livecodescript</string>
+	<key>settings</key>
+	<!-- documenation found at http://docs.sublimetext.info/en/latest/reference/metadata.html?highlight=indentation -->
+	<dict>
+		<key>increaseIndentPattern</key>
+			<string>^\s*((on+?\s+?.+)|(command+?\s+?.+)|(function+?\s+?.+)|(if+?\s+?.+(then$))|(\s*else$)|(repeat+?\s+?.+)|(switch+?\s+?.+)|(case+?\s+?.+)|(default+?$)|try$|(catch\s+?.+))</string>
+		<key>decreaseIndentPattern</key>
+			<string>(\\s*end\\s+?.+)|(case\\s+?.+)|(\\s*default)|(^\\s*else$)|(\\s*catch\\s+?.+)</string>
+		<key>disableIndentNextLinePattern</key>
+			<!-- rules for when then next line would not be indented further -->
+			<string></string>
+		<key>bracketIndentNextLinePattern</key>
+			<!-- if current line matches then next line (and only next line) indented 1 level further -->
+			<string></string>
+		<key>unIndentedLinePattern</key>
+			<!-- ignore any lines matching this pattern when computing the next line's indent level -->
+			<string></string>
+	</dict>
+</dict>
+</plist>
