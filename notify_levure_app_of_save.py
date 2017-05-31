@@ -28,6 +28,10 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
                       host = "localhost"
                       port = 61373
                       debug = False
+                      filename = view.file_name()
+
+                      # Fix path separator on Windows
+                      filename = filename.replace("\\", "/")
 
                       livecode_settings = window_settings.get('livecode')
                       if livecode_settings != None:
@@ -41,7 +45,7 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
 
                       try:
                           s.connect((host,port))
-                          query = {'stack': stack_name, 'filename': view.file_name()}
+                          query = {'stack': stack_name, 'filename': filename}
                           data = urllib.parse.urlencode(query) + "\n"
                           s.send(data.encode())
                           # s.sendto(data.encode(), (host, port))
