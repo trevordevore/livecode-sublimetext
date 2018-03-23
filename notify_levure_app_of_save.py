@@ -77,7 +77,7 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
                     if data.startswith('error: 360,'):
                         print('error: script is being executed within Livecode')
                     else:
-                        print('error updating script in LiveCode: ' + data)
+                        print('error running command in LiveCode: ' + data)
                 else:
                     print('command successfully sent to LiveCode')
                     if debug:
