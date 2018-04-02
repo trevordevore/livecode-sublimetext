@@ -6,13 +6,10 @@ import urllib
 
 class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
 
-    def on_load_async(self, view):
+    def on_activated_async(self, view):
         if self.is_livecode(view):
             query = {'command': 'open', 'filename': self.get_view_filename(view)}
             self.tell_livecode(view, query)
-
-    def on_activated_async(self, view):
-        if self.is_livecode(view):
             view.close()
 
     def on_post_save(self, view):
