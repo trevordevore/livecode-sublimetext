@@ -102,8 +102,8 @@ local var4, var5, var6 -- comment
 --                     ^^^^^^^^^^^ comment
 
 on libraryStack
--- <- keyword.control.function.handler.begin.livecode
--- ^^^^^^^^^^^^ entity.name.function.handler.begin.livecode
+-- <- keyword.control.function.begin.livecode
+-- ^^^^^^^^^^^^ entity.name.function.begin.livecode
 --^ - entity - keyword
 --             ^ - entity
 -- <- meta.function.livecode
@@ -142,8 +142,8 @@ on libraryStack
 --                                                                         ^ - variable
   
 end libraryStack
--- <- keyword.control.function.handler.end.livecode
---  ^^^^^^^^^^^^ entity.name.function.handler.end.livecode
+-- <- keyword.control.function.end.livecode
+--  ^^^^^^^^^^^^ entity.name.function.end.livecode
 --              ^ - keyword - entity - meta
 
 setProp uCustomProp pValue
@@ -590,3 +590,12 @@ end myProp
 on doSomethingElse
 
 end doSomethingElse
+
+ask "Do you want gravy?"; if it is "OK" then putGravyOnPotatoes # compound line
+--                      ^ punctuation.terminator
+--                        ^^ keyword.control.flow
+--                           ^^ keyword.other
+--                              ^^ keyword.operator
+--                                 ^^^^ string.quoted.double
+--                                      ^^^^ keyword.control.flow
+--                                                              ^^^^^^^^^^^^^^^^ comment.line
