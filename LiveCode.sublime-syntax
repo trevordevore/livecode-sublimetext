@@ -256,9 +256,10 @@ contexts:
       pop: true
 
   control:
-    - match: '(?i)^\s*(if)\s+'
+    - match: '(?i)(^|;)\s*(if)\s+'
       captures:
-        1: keyword.control.flow.livecode
+        1: punctuation.terminator.livecode
+        2: keyword.control.flow.livecode
       push: then_could_be_block_or_single_line
     - match: '(?i)^\s*(switch)\s+'
       captures:
