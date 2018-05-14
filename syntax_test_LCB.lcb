@@ -1,0 +1,26 @@
+-- SYNTAX TEST "Packages/LiveCode/LiveCode Builder.sublime-syntax"
+library sublime.syntaxtest
+--^^^^^ storage.type
+--      ^^^^^^^^^^^^^^^^^^ entity.name.class
+    public handler OnTimer()
+--  ^^^^^^ storage.modifier
+--         ^^^^^^^ storage.modifier
+--                 ^^^^^^^ entity.name.function
+--                        ^^ meta.method.parameters
+--                        ^ punctuation.section.parameters.begin
+--                         ^ punctuation.section.parameters.end
+        unsafe
+            repeat for each char tChar in "abcdef"
+--          ^^^^^^^^^^^^^^^ keyword.control.flow
+--                          ^^^^ variable.type
+--                               ^^^^^ variable.other
+--                                     ^^ keyword.other
+--                                        ^^^^^^^^ string.quoted.double
+            end repeat
+--          ^^^^^^^^^^ meta.block.repeat keyword.control.flow
+        end unsafe
+--      ^^^^^^^^^^ keyword.other
+    end handler
+--  ^^^^^^^^^^^ keyword.other
+end library
+--^^^^^^^^^ keyword.other
