@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>LiveCode Builder Indentation</string>
+	<key>scope</key>
+	<string>source.livecodebuilder</string>
+	<key>settings</key>
+	<!-- documentation found at http://docs.sublimetext.info/en/latest/reference/metadata.html?highlight=indentation -->
+	<dict>
+		<key>increaseIndentPattern</key>
+		<string>(?x)
+			^\s*
+			(?:
+				(?:module|widget|library)\b
+			|	((?:public|private)\s+)?handler
+			|	else\b
+			|	if\s+.+?then\b
+			)
+		</string>
+		<key>decreaseIndentPattern</key>
+		<string>(?x)
+			^\s*
+			(?:
+				end\s
+			|	else\b
+			)
+		</string>
+	</dict>
+</dict>
+</plist>
