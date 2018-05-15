@@ -47,6 +47,8 @@ contexts:
     - match: \bend\s+\1\b
       scope: keyword.other.livecodebuilder
       pop: true
+    - match: \bend\b # incomplete end or wrong nesting
+      scope: keyword.other.livecodebuilder
 
   metadata:
     - match: \bmetadata\b
@@ -226,6 +228,8 @@ contexts:
     - match: \bend\s+handler\b
       scope: keyword.other.livecodebuilder
       pop: true
+    - match: \bend\b # incomplete end or wrong nesting
+      scope: keyword.other.livecodebuilder
     - include: statement
 
   statement:
