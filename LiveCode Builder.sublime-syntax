@@ -128,14 +128,14 @@ contexts:
                 1: storage.modifier.livecodebuilder
               set:
                 - match: '{{identifier}}'
-                  scope: entity.name.function.property.getter.livecodebuilder
+                  scope: variable.property.getter.livecodebuilder
                   set:
                     - match: \b(set)\s
                       captures:
                         1: storage.modifier.livecodebuilder
                       set:
                         - match: '{{identifier}}'
-                          scope: entity.name.function.property.setter.livecodebuilder
+                          scope: variable.property.setter.livecodebuilder
                           pop: true
                 - include: else_pop
             - include: else_pop
