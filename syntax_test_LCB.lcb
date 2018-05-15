@@ -137,6 +137,16 @@ library sublime.syntaxtest
     end handler
 --  ^^^^^^^^^^^ keyword.other
 
+    public handler OnMouseUp()
+        if the mouse position is within my bounds then
+            post "mouseUp" to my script object with [the click button formatted as string] -- formatint needed until dp-2
+--                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.line.double-dash
+        else
+--      ^^^^ keyword.control.flow
+            post "mouseRelease" to my script object with [the click button formatted as string] -- formatint needed until dp-2
+        end if
+    end handler
+
     private handler _GetLevels() returns Array
         return {"floating": 3, \
 --      ^^^^^^ keyword.control.flow.return
