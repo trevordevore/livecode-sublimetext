@@ -4,7 +4,7 @@
 	<key>name</key>
 	<string>Comments</string>
 	<key>scope</key>
-	<string>source.livecode</string>
+	<string>source.livecode, source.livecodebuilder</string>
 	<key>settings</key>
 	<dict>
 		<key>shellVariables</key>
