@@ -215,3 +215,45 @@ widget sublime.syntaxtest.widget
         end repeat
     end handler
 end widget
+
+module com.livecode.compiler.bytecode.tests
+    public unsafe handler TestJumpIfFalse()
+--  ^^^^^^ storage.modifier
+--         ^^^^^^ storage.modifier
+--                ^^^^^^^ storage.modifier
+--                        ^^^^^^^^^^^^^^^ entity.name.function
+       variable tTest as Boolean
+       put false into tTest
+--     ^^^ keyword.other
+--         ^^^^^ constant.language
+--               ^^^^ keyword.other
+--                    ^^^^^ variable.other
+       bytecode
+--     ^^^^^^^^ keyword.other
+             register regTemp
+--           ^^^^^^^^ keyword.other
+--                    ^^^^^^^ variable.other.register
+             assign_constant regTemp, false
+--           ^^^^^^^^^^^^^^^ support.function.opcode
+--                           ^^^^^^^ variable.other
+--                                  ^ punctuation.separator.parameter
+--                                    ^^^^^ constant.language
+             jump_if_false regTemp, lAfterAssign
+--           ^^^^^^^^^^^^^ support.function.opcode
+--                         ^^^^^^^ variable.other
+--                                ^ punctuation.separator.parameter
+--                                  ^^^^^^^^^^^^ variable.other
+             assign_constant tTest, true
+--           ^^^^^^^^^^^^^^^ support.function.opcode
+--                           ^^^^^ variable.other
+--                                ^ punctuation.separator.parameter
+--                                  ^^^^ constant.language
+          lAfterAssign:
+--        ^^^^^^^^^^^^ entity.name.label
+--                    ^ punctuation.separator
+       end bytecode
+--     ^^^^^^^^^^^^ keyword.other
+       test "jumpiffalse forward label" when tTest is false
+    end handler
+--  ^^^^^^^^^^^ keyword.other
+end module
