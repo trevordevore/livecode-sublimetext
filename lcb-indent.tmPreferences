@@ -16,6 +16,8 @@
 			|	((?:public|private)\s+)?handler
 			|	else\b
 			|	if\s+.+?then\b
+			|	unsafe\b
+			|	bytecode\b
 			)
 		</string>
 		<key>decreaseIndentPattern</key>
