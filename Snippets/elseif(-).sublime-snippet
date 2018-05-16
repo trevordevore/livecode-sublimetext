@@ -3,6 +3,6 @@
 	${0:# code...}
 ]]></content>
 	<tabTrigger>elseif</tabTrigger>
-	<scope>source.livecode</scope>
+	<scope>source.livecode, source.livecodebuilder</scope>
 	<description>else if …</description>
 </snippet>
