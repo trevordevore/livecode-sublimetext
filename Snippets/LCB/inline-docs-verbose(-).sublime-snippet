@@ -1,0 +1,16 @@
+<snippet>
+  <content><![CDATA[/**
+Summary: ${1:Summary}
+
+Parameters:
+${2:pParam}:
+
+Description:
+${3:Description}
+
+Returns: ${4:nothing}
+*/]]></content>
+  <tabTrigger>inlinev</tabTrigger>
+  <scope>source.livecodebuilder</scope>
+  <description>verbose inline docs …</description>
+</snippet>

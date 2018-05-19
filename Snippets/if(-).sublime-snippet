@@ -4,6 +4,6 @@
 end if
 $0]]></content>
 	<tabTrigger>ifthen</tabTrigger>
-	<scope>source.livecode</scope>
+	<scope>source.livecode, source.livecodebuilder</scope>
 	<description>if …</description>
 </snippet>

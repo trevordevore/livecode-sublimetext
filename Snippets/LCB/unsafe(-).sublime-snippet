@@ -1,0 +1,8 @@
+<snippet>
+  <content><![CDATA[unsafe
+  ${1://code}
+end unsafe]]></content>
+  <tabTrigger>unsafe</tabTrigger>
+  <scope>source.livecodebuilder</scope>
+  <description>unsafe …</description>
+</snippet>

@@ -1,0 +1,8 @@
+<snippet>
+  <content><![CDATA[${1:public} handler ${2:HandlerName}(in ${3:pParam} as ${4:String}) returns ${5:nothing}
+  ${0:// code...}
+end handler]]></content>
+  <tabTrigger>handler</tabTrigger>
+  <scope>source.livecodebuilder</scope>
+  <description>handler …</description>
+</snippet>

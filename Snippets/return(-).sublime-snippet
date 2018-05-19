@@ -1,6 +1,6 @@
 <snippet>
-	<content><![CDATA[return ${0:# code...}]]></content>
+	<content><![CDATA[return ${0:// code...}]]></content>
 	<tabTrigger>return</tabTrigger>
-	<scope>source.livecode</scope>
+	<scope>source.livecode, source.livecodebuilder</scope>
 	<description>return …</description>
 </snippet>

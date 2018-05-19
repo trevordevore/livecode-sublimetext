@@ -1,0 +1,16 @@
+<snippet>
+  <content><![CDATA[widget community.lvecode.${1:developerID}.${2:extensionName}
+
+  use com.livecode.widget
+  use com.livecode.canvas
+  use com.livecode.engine
+
+  metadata title is "${3:Title}"
+  metadata author is "${4:AuthorName}"
+  metadata version is "${5:0.0.1}"
+
+end widget]]></content>
+  <tabTrigger>widget</tabTrigger>
+  <scope>source.livecodebuilder</scope>
+  <description>widget …</description>
+</snippet>

@@ -1,0 +1,14 @@
+<snippet>
+  <content><![CDATA[module community.lvecode.${1:developerID}.${2:extensionName}
+
+  use com.livecode.engine
+
+  metadata title is "${3:Title}"
+  metadata author is "${4:AuthorName}"
+  metadata version is "${5:0.0.1}"
+
+end module]]></content>
+  <tabTrigger>module</tabTrigger>
+  <scope>source.livecodebuilder</scope>
+  <description>module …</description>
+</snippet>
