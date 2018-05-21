@@ -270,6 +270,7 @@ contexts:
     - match: \\(?=$|\s)
       scope: punctuation.separator.continuation.line.livecodebuilder
       push:
+        - meta_include_prototype: false
         - match: \S.*
           scope: invalid.illegal.expected-end-of-line.livecodebuilder
         - match: $\n? # consume the newline character so it doesn't pop the expression context off the stack, for example
@@ -281,6 +282,7 @@ contexts:
     - match: '"'
       scope: punctuation.definition.string.begin.livecodebuilder
       push:
+        - meta_include_prototype: false
         - meta_scope: string.quoted.double.livecodebuilder
         - match: '"'
           scope: punctuation.definition.string.end.livecodebuilder

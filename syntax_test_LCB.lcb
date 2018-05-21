@@ -23,6 +23,9 @@ library sublime.syntaxtest
 --                      ^ punctuation.definition.string.begin
 --                      ^^^^^^^ string.quoted.double
 --                            ^ punctuation.definition.string.end
+    metadata st3_syntax_test is "string#not a comment"
+--                              ^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double - comment
+--                                                   ^ punctuation.definition.string.end
 
     private foreign handler ObjC_NSApplicationSharedApplication() returns ObjcId binds to "objc:NSApplication.+sharedApplication"
 --  ^^^^^^^ storage.modifier
