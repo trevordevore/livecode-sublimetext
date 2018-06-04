@@ -320,7 +320,7 @@ contexts:
         - match: '{{identifier}}'
           scope: variable.other.livecodebuilder
           set:
-            - match: '='
+            - match: 'from'
               scope: keyword.operator.assignment.livecodebuilder
               set: inside_repeat
             - match: '$\n?'
