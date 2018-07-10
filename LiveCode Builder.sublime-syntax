@@ -160,6 +160,7 @@ contexts:
                         - match: '{{identifier}}'
                           scope: variable.property.setter.livecodebuilder
                           pop: true
+                    - include: else_pop
                 - include: else_pop
             - include: else_pop
     - match: \b(event)\s

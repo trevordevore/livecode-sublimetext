@@ -87,6 +87,12 @@ library sublime.syntaxtest
 --                                                                  ^^^ storage.modifier
 --                                                                      ^^^^^^^^^^^^^^^ variable.property.setter
 
+    property idealWidth              get mIDealWidth
+--  ^^^^^^^^ storage.modifier
+--           ^^^^^^^^^^ entity.name.function.property
+--                                   ^^^ storage.modifier
+--                                       ^^^^^^^^^^^ variable.property.getter
+
     public handler NSAppIsActive() returns Boolean
 --  ^^^^^^ storage.modifier
 --         ^^^^^^^ storage.modifier
