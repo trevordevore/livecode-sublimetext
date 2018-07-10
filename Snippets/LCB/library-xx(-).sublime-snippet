@@ -1,5 +1,5 @@
 <snippet>
-  <content><![CDATA[library community.lvecode.${1:developerID}.${2:extensionName}
+  <content><![CDATA[library community.livecode.${1:developerID}.${2:extensionName}
 
   use com.livecode.engine
 

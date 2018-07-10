@@ -1,7 +1,6 @@
 <snippet>
   <content><![CDATA[${1:public} foreign handler ${2:HandlerName} (in ${3:pParam} as ${4:CInt}) \
-      returns ${5:nothing} \
-      binds to "${6:binding}"]]></content>
+      returns ${5:nothing} binds to "${6:binding}"]]></content>
   <tabTrigger>fhandler</tabTrigger>
   <scope>source.livecodebuilder</scope>
   <description>foreigj handler …</description>
