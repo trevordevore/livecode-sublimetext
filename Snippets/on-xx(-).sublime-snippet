@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[on ${1:HandlerName} ${2:param}
-	${0:# code...}
+  ${0:# code...}
 end ${1}]]></content>
 	<tabTrigger>on</tabTrigger>
 	<scope>source.livecode</scope>
