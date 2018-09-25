@@ -11,6 +11,6 @@ ${3:Description}
 Returns: ${4:nothing}
 */]]></content>
   <tabTrigger>inlinev</tabTrigger>
-  <scope>source.livecodebuilder</scope>
+  <scope>source.livecode, source.livecodebuilder</scope>
   <description>verbose inline docs …</description>
 </snippet>

@@ -5,6 +5,6 @@ Summary: ${1:Summary}
 Returns: ${2:nothing}
 */]]></content>
   <tabTrigger>inline</tabTrigger>
-  <scope>source.livecodebuilder</scope>
+  <scope>source.livecode, source.livecodebuilder</scope>
   <description>inline docs …</description>
 </snippet>
