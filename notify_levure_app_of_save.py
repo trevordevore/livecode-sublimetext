@@ -24,9 +24,9 @@ class LiveCodeNotifyOnSave(sublime_plugin.EventListener):
 
             # Get the script only stack name
             # \A matches beginning of file
-            region = view.find('\Ascript "([-.a-zA-Z0-9_\s\?!]+)"', 0, sublime.IGNORECASE)
+            region = view.find('\Ascript "([-.:a-zA-Z0-9_\s\?!]+)"', 0, sublime.IGNORECASE)
             if region.a >= 0:
-                stack_name = re.search('"([-.a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
+                stack_name = re.search('"([-.:a-zA-Z0-9_\s\?!]+)"', view.substr(region)).group(1)
 
                 query = {'command': 'reload script', 'stack': stack_name, 'filename': self.get_view_filename(view)}
                 self.tell_livecode(view, query)
