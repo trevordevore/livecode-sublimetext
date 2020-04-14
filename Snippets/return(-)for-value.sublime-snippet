@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[return ${0:# code...} for value]]></content>
-	<tabTrigger>return value</tabTrigger>
+	<tabTrigger>retvalue</tabTrigger>
 	<scope>source.livecode</scope>
 	<description>return … for value</description>
 </snippet>
